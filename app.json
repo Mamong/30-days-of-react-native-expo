@@ -15,7 +15,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.lion.30-days-of-react-native-expo"
     },
     "android": {
       "adaptiveIcon": {
