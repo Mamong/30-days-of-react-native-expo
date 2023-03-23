@@ -10,7 +10,7 @@ import { StatusBar, Image, StyleSheet, Text, View } from 'react-native';
 import Util from './utils';
 import PasswordGesture from 'react-native-gesture-password';
 
-const EnterPassword = ( {password, onEnterPassword}) => {
+export const EnterPassword = ({password, onEnterPassword}) => {
     const [message, setMessage] = useState('Unlock with your password.')
     const [status, setStatus] = useState('normal')
 
