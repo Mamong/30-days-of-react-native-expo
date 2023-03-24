@@ -4,36 +4,31 @@
  */
 'use strict';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Platform, Image, StyleSheet, StatusBar, Text, TouchableHighlight, PanResponder, View } from 'react-native';
 import Util from './utils';
 import { Ionicons } from '@expo/vector-icons';
 
 const MoveableCircle = () => {
-
-    let _previousLeft = Util.size.width / 2 - 40;
-    let _previousTop = Util.size.height / 2 - 50;
+    const [color, setColor] = useState("rgba(255,255,255,0.7)")
+    const _previousLeft = useRef(Util.size.width / 2 - 40);
+    const _previousTop = useRef(Util.size.height / 2 - 50);
     let _maxTop = Util.size.height - 110;
     let _maxLeft = Util.size.width - 98;
-    let _circleStyles = {};
     let circle = useRef();
-    let baseball = useRef();
-    let _ballStyles = {};
-    let _panResponder = {};
 
-    _panResponder = PanResponder.create({
+    const _panResponder = useRef(PanResponder.create({
         onStartShouldSetPanResponder: (evt, gestureState) => true,
         onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
         onMoveShouldSetPanResponder: (evt, gestureState) => true,
         onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
         onPanResponderGrant: (evt, gestureState) => {
-            _ballStyles.style.color = "white"
-            _updateColor()
+            setColor("white")
         },
         onPanResponderMove: (evt, gestureState) => {
 
-            _circleStyles.style.left = _previousLeft + gestureState.dx;
-            _circleStyles.style.top = _previousTop + gestureState.dy;
+            _circleStyles.style.left = _previousLeft.current + gestureState.dx;
+            _circleStyles.style.top = _previousTop.current + gestureState.dy;
             if (_circleStyles.style.left < 0) {
                 _circleStyles.style.left = 0;
             };
@@ -51,34 +46,24 @@ const MoveableCircle = () => {
         onPanResponderTerminationRequest: (evt, gestureState) => true,
         onPanResponderRelease: (evt, gestureState) => _endMove(evt, gestureState),
         onPanResponderTerminate: (evt, gestureState) => _endMove(evt, gestureState),
-    });
-    _circleStyles = {
-        style: {
-            left: _previousLeft,
-            top: _previousTop,
-        },
-    };
+    })).current;
 
-    _ballStyles = {
+    const _circleStyles = useRef({
         style: {
-            color: "rgba(255,255,255,0.7)"
-        }
-    }
+            left: _previousLeft.current,
+            top: _previousTop.current,
+        },
+    }).current;
 
 
     const _updatePosition = () => {
         circle.current?.setNativeProps(_circleStyles);
     }
 
-    const _updateColor = () => {
-        baseball.current?.setNativeProps(_ballStyles);
-    }
-
     const _endMove = (evt, gestureState) => {
-        _previousLeft += gestureState.dx;
-        _previousTop += gestureState.dy;
-        _ballStyles.style.color = "rgba(255,255,255,0.7)"
-        _updateColor()
+        _previousLeft.current += gestureState.dx;
+        _previousTop.current += gestureState.dy;
+        setColor("rgba(255,255,255,0.7)")
     }
 
     useEffect(() => {
@@ -87,7 +72,7 @@ const MoveableCircle = () => {
 
     return (
         <View ref={circle} style={styles.MoveableCircle} {..._panResponder.panHandlers}>
-            <Ionicons ref={baseball} name="ios-baseball" style={_ballStyles.style} size={120}></Ionicons>
+            <Ionicons name="ios-baseball" color={color} size={120}></Ionicons>
         </View>
     )
 }
