@@ -11,7 +11,7 @@ import React, { useState, useRef } from 'react';
 import { Image, StyleSheet, LayoutAnimation, Text, TouchableHighlight, PanResponder, View } from 'react-native';
 import Util from './utils';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Sortable = () => {
     const [selected, setSelected] = useState(14)
@@ -264,7 +264,7 @@ const Sortable = () => {
         let top = Math.floor(index / 3) * _width;
         let left = (index % 3) * _width;
         return (
-            <View ref={(el)=>{ boxRefs.current[index] = el}} {..._panResponder.panHandlers} key={elem.key} style={[styles.touchBox, { top, left }]} underlayColor="#eee">
+            <View ref={(el) => { boxRefs.current[index] = el }} {..._panResponder.panHandlers} key={elem.key} style={[styles.touchBox, { top, left }]} underlayColor="#eee">
                 <View style={styles.boxContainer}>
                     <Text style={styles.boxText}>Day{index + 1}</Text>
                     {elem.isFA ? <FontAwesome size={elem.size} name={elem.icon} style={[styles.boxIcon, { color: elem.color }]}></FontAwesome> :
@@ -280,17 +280,20 @@ const Sortable = () => {
 
     return (
         <View style={styles.touchBoxContainer}>
-            {boxes}
-        </View>
+                {boxes}
+            </View>
     );
 }
 
 
 export default function Day18() {
     return (
-        <View>
+        <SafeAreaView
+            style={{ flex: 1 }}
+            edges={['top', 'bottom', 'right', 'left']}
+            mode="padding">
             <Sortable />
-        </View>
+        </SafeAreaView>
     )
 }
 
@@ -313,7 +316,7 @@ const styles = StyleSheet.create({
     },
     touchBoxContainer: {
         width: Util.size.width,
-        marginTop: 30,
+        marginTop: 0,
     },
     boxContainer: {
         alignItems: "center",
