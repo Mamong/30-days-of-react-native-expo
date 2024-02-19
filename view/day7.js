@@ -66,10 +66,6 @@ const MoveableCircle = () => {
         setColor("rgba(255,255,255,0.7)")
     }
 
-    useEffect(() => {
-        _updatePosition();
-    }, [circle.current])
-
     return (
         <View ref={circle} style={styles.MoveableCircle} {..._panResponder.panHandlers}>
             <Ionicons name="ios-baseball" color={color} size={120}></Ionicons>
@@ -112,8 +108,7 @@ const styles = StyleSheet.create({
     MoveableCircle: {
         backgroundColor: "transparent",
         position: "absolute",
-        left: 0,
-        right: 0
-
+        left: Util.size.width / 2 - 40,
+        top: Util.size.height / 2 - 50
     },
 });

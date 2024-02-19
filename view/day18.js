@@ -280,8 +280,8 @@ const Sortable = () => {
 
     return (
         <View style={styles.touchBoxContainer}>
-                {boxes}
-            </View>
+            {boxes}
+        </View>
     );
 }
 
